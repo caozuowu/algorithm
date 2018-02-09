@@ -7,9 +7,11 @@
 //
 
 #include <iostream>
-
+template<class T>
+T abc(T a, T b, T c){
+    return a+b+c;
+}
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    abc(1, 3, 4);
     return 0;
 }
