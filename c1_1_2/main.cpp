@@ -62,6 +62,29 @@ int F(int n){
     return result;
 }
 
+/*
+ * 5.试编写一个递归函数，用来输出n 个元素的所有子集。例如，三个元素{a, b, c} 的所有
+ *   子集是: { }(空集)，{ a }, { b }, { c }, { a , b}, { a , c}, { b , c} 和{ a , b , c}
+ */
+
+
+/*
+ * 6.试编写一个递归函数来确定元素 x 是否属于数组 a[ 0 :n - 1 ]
+ */
+
+bool F1(int x, int arr[], int n, int index){
+    if (index < n && index >= 0) {
+        if(arr[index] == x) {
+            return true;
+        }else {
+            return F1(x, arr, n, index + 1);
+        }
+    }else{
+        return false;
+    }
+}
+
+
 
 int main(int argc, const char * argv[]) {
 
