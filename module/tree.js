@@ -78,10 +78,11 @@ var TreeNode = function(val, left, right) {
 
         var result = [];
         var stack = [this]
-        
-        while (stack.length >= 0) {
+
+        while (stack.length) {
 
             var n = stack.pop()
+            result.push(n.val)
 
             if (n.right) {
                 stack.push(n.right)
@@ -91,10 +92,8 @@ var TreeNode = function(val, left, right) {
                 stack.push(n.left)
             }
 
-            
-            result.push(n.val)
-
         }
+
         console.log(result)
     }
 
@@ -122,9 +121,10 @@ var createTree = function(array, left, right) {
 }
 
 // test code
-var array = [1,2,3,4,5,6,7,8,9]
+var array = [1,2,3,4,5]
 var root = createTree(array, 0, 8);
 // root.walk('layer')
+root.walk('pre')
 root.stackWalk()
 
 module.exports = {
