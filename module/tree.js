@@ -1,111 +1,100 @@
 
 
 var TreeNode = function(val, left, right) {
-
-    var WalkType = {
-        pre:    'pre',
-        middle: 'middle',
-        post:   'post',
-        layer:  'layer'
-    }
-
     this.val = val
     this.left = left;
     this.right = right;
+}
 
-    this.walk = function(type) {
-        if (type == WalkType.pre) {
-            console.log(this.preWalk())
-        } else if (type == WalkType.middle) {
-            console.log(this.middleWale());
-        }else if (type == WalkType.layer) {
-            console.log(this.layerWalk())
-        }      
+TreeNode.prototype.walk = function(type) {
+    if (type == 'pre') {
+        console.log(this.preWalk())
+    } else if (type == 'middle') {
+        console.log(this.middleWalk());
+    }else if (type == 'layer') {
+        console.log(this.layerWalk())
+    }      
+}
+
+TreeNode.prototype.depth = function() {
+    if (!this.left && !this.right) {
+        return 1
+    }else {
+        var ld = this.left.depth() + 1
+        var rd = this.right.depth() + 1
+        return ld > rd ? ld : rd
     }
-    
-    this.preWalk = function() {
-        var result = []
-        if (this.left) {
-            result.push(this.left.preWalk())
-        }
-        if (this.right) {
-            result.push(this.right.preWalk())
-        }
+}
 
-        result.push(this.val);
-        return result;
+TreeNode.prototype.preWalk = function() {
+    var result = []
+    if (this.left) {
+        result.push(this.left.preWalk())
     }
-
-    this.middleWale = function() {
-
-        var result = []
-
-        if (this.left) {
-            result.push(this.left.middleWale())
-        }
-
-        result.push(this.val);
-
-        if (this.right) {
-            result.push(this.right.middleWale())
-        }
-
-        return result;
+    if (this.right) {
+        result.push(this.right.preWalk())
     }
 
-    this.layerWalk = function () {
-        var queue = [this];
-        var result = [];
-        while (queue.length > 0) {
-            var line = []
-            var length = queue.length
-            for (var i = 0; i < length ; i++) {
-                var n = queue.shift()
-                line.push(n.val)
-                if (n.left) {
-                    queue.push(n.left)
-                }
-                if (n.right) {
-                    queue.push(n.right)
-                }
-            }
-            result.push(line)
-        }
-        return result;
+    result.push(this.val);
+    return result;
+}
+
+TreeNode.prototype.middleWalk = function() {
+
+    var result = []
+
+    if (this.left) {
+        result.push(this.left.middleWalk())
     }
 
-    this.stackWalk = function() {
+    result.push(this.val);
 
-        var result = [];
-        var stack = [this]
+    if (this.right) {
+        result.push(this.right.middleWalk())
+    }
 
-        while (stack.length) {
+    return result;
+}
 
-            var n = stack.pop()
-            result.push(n.val)
-
-            if (n.right) {
-                stack.push(n.right)
-            }
-
+TreeNode.prototype.layerWalk = function () {
+    var queue = [this];
+    var result = [];
+    while (queue.length > 0) {
+        var line = []
+        var length = queue.length
+        for (var i = 0; i < length ; i++) {
+            var n = queue.shift()
+            line.push(n.val)
             if (n.left) {
-                stack.push(n.left)
+                queue.push(n.left)
             }
+            if (n.right) {
+                queue.push(n.right)
+            }
+        }
+        result.push(line)
+    }
+    return result;
+}
 
+TreeNode.prototype.stackWalk = function() {
+
+    var result = [];
+    var stack = []
+    var p = this;
+
+    while (stack.length || p) {
+        
+        while (p) {
+            stack.push(p)
+            result.push(p.val)
+            p = p.left
         }
 
-        console.log(result)
+        p = stack.pop().right
     }
 
-    this.depth = function() {
-        if (!this.left && !this.right) {
-            return 1
-        }else {
-            var ld = this.left.depth() + 1
-            var rd = this.right.depth() + 1
-            return ld > rd ? ld : rd
-        }
-    }
+    console.log(result)
 }
 
 var createTree = function(array, left, right) {
@@ -122,10 +111,12 @@ var createTree = function(array, left, right) {
 
 // test code
 var array = [1,2,3,4,5]
-var root = createTree(array, 0, 8);
-// root.walk('layer')
+var root = createTree(array, 0, 4);
+root.walk('layer')
 root.walk('pre')
 root.stackWalk()
+
+
 
 module.exports = {
     TreeNode: TreeNode,
