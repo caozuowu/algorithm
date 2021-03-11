@@ -7,30 +7,21 @@
 var nums = [23,2,4,6,7];
 var k = 6
 var checkSubarraySum = function(nums, k) {
-    var length = nums.length
-    var dp = new Array(length)
-    for (var i = 0; i < length; i++) {
-        dp[i] = new Array(length)
-    }
-
-    for (var l = 0; l < length; l++) {
-        for (var i = 0; i < length-l; i++) {
-            var j = i+l
-            console.log('i == ', i, 'j == ', j)
-            if (l == 0) {
-                dp[i][j] = nums[i]
-            }else if (l == 1) {
-                dp[i][j] = nums[i] + nums[j]
-                if (dp[i][j] % 6 == 0) {
-                    return true
-                } 
-            }else {
-                // dp[i][j] = 
-            }
+    var sum = 0;
+    var map = {0:-1}
+    for (var i = 0; i < nums.length; i++) {
+        sum += nums[i]
+        sum %= k;
+        if (map[sum]) {
+            //上一个地址
+           if (i - map[sum] > 1) {
+               return true
+           }
+        }else {
+            map[sum] = i
         }
     }
-
-    console.log(dp)
+    return false
 };
 
 console.log(checkSubarraySum(nums, k))
